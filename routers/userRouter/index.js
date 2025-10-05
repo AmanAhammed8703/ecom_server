@@ -1,5 +1,6 @@
 import express, { response } from 'express'
 import { helpers } from '../../helpers/helpers.js';
+import { auth } from '../../auth/authMiddlewear.js';
 
 export const userRouter = express.Router();
 
@@ -17,14 +18,14 @@ userRouter.post("/logIn",async(req,res)=>{
         res.status(500).json({ message: err.message });
     })
 })
-userRouter.post("/addToCart",async(req,res)=>{
+userRouter.post("/addToCart",auth,async(req,res)=>{
     await helpers.addToCart(req.body).then((response)=>{
         res.status(201).json(response);
     }).catch((err)=>{
         res.status(500).json({ message: err.message });
     })
 })
-userRouter.post("/placeOrder",async(req,res)=>{
+userRouter.post("/placeOrder",auth,async(req,res)=>{
     
     await helpers.placeOrder(req.body.userId).then((response)=>{
         res.status(201).json(response);
