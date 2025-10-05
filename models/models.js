@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize'
 import { sequelize } from  "../config/db.js"
 
- export const product = sequelize.define("product",{
+ export const Product = sequelize.define("product",{
     name:{
         type:DataTypes.STRING,
         allowNull:false
@@ -12,7 +12,7 @@ import { sequelize } from  "../config/db.js"
     }
 })
 
-export const user = sequelize.define("user",{
+export const User = sequelize.define("user",{
     name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -28,3 +28,20 @@ export const user = sequelize.define("user",{
     allowNull: false,
   },
 })
+
+export const Cart = sequelize.define("cart", {
+  quantity: DataTypes.INTEGER,
+});
+
+User.hasMany(Cart);
+Cart.belongsTo(User);
+Product.hasMany(User);
+Cart.belongsTo(Product);
+
+export const Order = sequelize.define("order", {
+  totalAmount: DataTypes.FLOAT,
+  status: { type: DataTypes.STRING, defaultValue: "Pending" },
+});
+
+User.hasMany(Order);
+Order.belongsTo(User);
